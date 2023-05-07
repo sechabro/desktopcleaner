@@ -2,8 +2,7 @@ import os
 from datetime import datetime
 import config
 
-desktop = config.desktop
-documents = config.documents
+dirs = config.directories()
 
 
 def move_item(filepath=None, new_filepath=None):
@@ -12,6 +11,7 @@ def move_item(filepath=None, new_filepath=None):
 
 
 def date_mkdir(mod_date=None, item=None):
+    documents = dirs[1]
     new_dir = os.path.join(documents, mod_date)
     new_filepath = os.path.join(new_dir, item)
     if os.path.exists(new_dir):
@@ -26,6 +26,7 @@ def date_mkdir(mod_date=None, item=None):
 
 def main():
     results = []
+    desktop = dirs[0]
     for item in os.listdir(desktop):
         filepath = os.path.join(desktop, item)
         metadata = os.stat((filepath))
@@ -36,7 +37,7 @@ def main():
             mod_date=mod_date, item=item)
         move_val = move_item(filepath=filepath, new_filepath=new_filepath)
         results.append(item)
-    print(f'files moved: {results}')
+        print(f'files moved: {results}')
 
 
 if __name__ == "__main__":
