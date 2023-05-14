@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 import config
 
@@ -41,18 +42,23 @@ def main():
     for from_dir in from_dirs:
 
         for item in os.listdir(from_dir):
-            filepath = os.path.join(from_dir, item)
-            metadata = os.stat((filepath))
-            time = datetime.fromtimestamp(metadata.st_mtime)
-            mod_date = timestamp_format(time=time)
-            new_filepath = date_mkdir(
-                mod_date=mod_date, item=item)
-            move_val = move_item(filepath=filepath, new_filepath=new_filepath)
-
-            if move_val is False:
+            hidden = re.findall("^.", item)
+            if hidden:
                 continue
             else:
-                results.append(item)
+                filepath = os.path.join(from_dir, item)
+                metadata = os.stat((filepath))
+                time = datetime.fromtimestamp(metadata.st_mtime)
+                mod_date = timestamp_format(time=time)
+                new_filepath = date_mkdir(
+                    mod_date=mod_date, item=item)
+                move_val = move_item(
+                    filepath=filepath, new_filepath=new_filepath)
+
+                if move_val is False:
+                    continue
+                else:
+                    results.append(item)
 
         print(f'files moved from {from_dir}: {results}')
 
