@@ -50,11 +50,11 @@ def main():
             move_val = move_item(filepath=filepath, new_filepath=new_filepath)
 
             if move_val is False:
-                print(f'{item} is not a file')
                 continue
             else:
                 results.append(item)
-        print(f'files moved: {results}')
+
+        print(f'files moved from {from_dir}: {results}')
 
 
 if __name__ == "__main__":
