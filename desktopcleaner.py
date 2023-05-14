@@ -6,15 +6,15 @@ dirs = config.directories()
 
 
 def move_item(filepath=None, new_filepath=None):
-    try:
+    if os.path.isfile(filepath):
         os.rename(filepath, new_filepath)
         return True
-    except Exception:
+    elif not os.path.isfile(filepath):
         return False
 
 
 def date_mkdir(mod_date=None, item=None):
-    to_dir = dirs[1]
+    to_dir = dirs["to_dir"]
     new_dir = os.path.join(to_dir, mod_date)
     new_filepath = os.path.join(new_dir, item)
 
@@ -36,21 +36,24 @@ def timestamp_format(time=None):
 
 def main():
     results = []
-    to_dir = dirs[0]
+    from_dirs = dirs["from_dirs"]
 
-    for item in os.listdir(to_dir):
-        filepath = os.path.join(to_dir, item)
-        metadata = os.stat((filepath))
-        time = datetime.fromtimestamp(metadata.st_mtime)
-        mod_date = timestamp_format(time=time)
-        new_filepath = date_mkdir(
-            mod_date=mod_date, item=item)
-        move_val = move_item(filepath=filepath, new_filepath=new_filepath)
+    for from_dir in from_dirs:
 
-        if move_val is False:
-            raise Exception(f'{item} could not be successfully moved')
-        else:
-            results.append(item)
+        for item in os.listdir(from_dir):
+            filepath = os.path.join(from_dir, item)
+            metadata = os.stat((filepath))
+            time = datetime.fromtimestamp(metadata.st_mtime)
+            mod_date = timestamp_format(time=time)
+            new_filepath = date_mkdir(
+                mod_date=mod_date, item=item)
+            move_val = move_item(filepath=filepath, new_filepath=new_filepath)
+
+            if move_val is False:
+                print(f'{item} is not a file')
+                continue
+            else:
+                results.append(item)
         print(f'files moved: {results}')
 
 
