@@ -11,7 +11,6 @@ def move_item(filepath=None, new_filepath=None):
         os.rename(filepath, new_filepath)
         return True
     elif not os.path.isfile(filepath):
-        os.rmdir(filepath)
         return False
 
 
@@ -25,7 +24,6 @@ def date_mkdir(mod_date=None, item=None):
         return filepath_retval
     else:
         os.mkdir(new_dir)
-        print(f'{new_dir} created.')
         filepath_retval = new_filepath
         return filepath_retval
 
@@ -45,7 +43,7 @@ def main():
         for item in os.listdir(from_dir):
             hidden = re.findall("^[.]", item)
             if hidden:
-                print(f'item {item} is a hidden file')
+                print(f'skipping hidden item {item}.')
             else:
                 filepath = os.path.join(from_dir, item)
                 metadata = os.stat((filepath))
