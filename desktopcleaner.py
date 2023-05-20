@@ -11,6 +11,7 @@ def move_item(filepath=None, new_filepath=None):
         os.rename(filepath, new_filepath)
         return True
     elif not os.path.isfile(filepath):
+        os.rmdir(filepath)
         return False
 
 
@@ -42,9 +43,9 @@ def main():
     for from_dir in from_dirs:
 
         for item in os.listdir(from_dir):
-            hidden = re.findall("^.", item)
+            hidden = re.findall("^[.]", item)
             if hidden:
-                continue
+                print(f'item {item} is a hidden file')
             else:
                 filepath = os.path.join(from_dir, item)
                 metadata = os.stat((filepath))
