@@ -1,4 +1,5 @@
 import os
+import hashlib
 
 
 def directories():
@@ -8,3 +9,8 @@ def directories():
     dirs["to_dir"] = str(os.getenv('DOCS', default=None))
 
     return dirs
+
+
+def get_token():
+    token = str(os.getenv('DPBX', default=None))
+    return token

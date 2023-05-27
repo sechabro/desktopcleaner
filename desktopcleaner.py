@@ -1,9 +1,11 @@
 import os
 import re
+import requests
 from datetime import datetime
 import config
 
 dirs = config.directories()
+auth_token = config.get_token()
 
 
 def date_mkdir(mod_date=None, item=None):
@@ -44,6 +46,26 @@ def move_process(from_dir=None):
             os.rename(filepath, new_filepath)
             results.append(item)
     return results
+
+
+def to_dropbox(token=None, filepath=None, content_hash=None):
+    url = "https://content.dropboxapi.com/2/files/upload"
+
+    params = {
+        "path": filepath,
+        "mute": False,
+        "mode": "add",
+        "autorename": True,
+        "content_hash": content_hash,
+        "strict_conflict": False
+    }
+    headers = {"Authorization": "Bearer {0}".format(token),
+               "Dropbox-API-Arg": params,
+               "Content-Type": "application/octet-stream"
+               }
+    with requests.Session() as s:
+        s.request('POST', url, params=params, headers=headers)
+        s.post(url)
 
 
 def main():
