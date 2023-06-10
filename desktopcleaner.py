@@ -1,6 +1,7 @@
 import os
 import re
 import requests
+import json
 from datetime import datetime
 import config
 
@@ -50,22 +51,22 @@ def move_process(from_dir=None):
 
 def to_dropbox(token=None, filepath=None, content_hash=None):
     url = "https://content.dropboxapi.com/2/files/upload"
+    params = {"path": filepath,
+              "mute": False,
+              "mode": "add",
+              "autorename": True,
+              "strict_conflict": False
+              }
+    json_params = json.dumps(params)
 
-    params = {
-        "path": filepath,
-        "mute": False,
-        "mode": "add",
-        "autorename": True,
-        "content_hash": content_hash,
-        "strict_conflict": False
-    }
-    headers = {"Authorization": "Bearer {0}".format(token),
-               "Dropbox-API-Arg": params,
+    headers = {"Authorization": f'Bearer {token}',
+               "Dropbox-API-Arg": f'{json_params}',
                "Content-Type": "application/octet-stream"
                }
-    with requests.Session() as s:
-        s.request('POST', url, params=params, headers=headers)
-        s.post(url)
+
+    req = requests.request('POST', url, json=json_params, headers=headers)
+    response = requests.Response.json(req)
+    print(response)
 
 
 def main():
