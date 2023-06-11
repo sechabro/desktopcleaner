@@ -65,8 +65,8 @@ def to_dropbox(token=None, filepath=None, content_hash=None):
                }
 
     req = requests.request('POST', url, json=json_params, headers=headers)
-    response = requests.Response.json(req)
-    print(response)
+    response = req.status_code
+    return response
 
 
 def main():
