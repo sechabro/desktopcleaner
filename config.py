@@ -1,5 +1,4 @@
 import os
-import hashlib
 
 
 def directories():
@@ -11,6 +10,8 @@ def directories():
     return dirs
 
 
-def get_token():
-    token = str(os.getenv('DPBX', default=None))
-    return token
+def get_app_creds():
+    creds = {}
+    creds["key"] = str(os.getenv('DKEY', default=None))
+    creds["secret"] = str(os.getenv('DSEC', default=None))
+    return creds

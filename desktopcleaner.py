@@ -6,7 +6,6 @@ from datetime import datetime
 import config
 
 dirs = config.directories()
-auth_token = config.get_token()
 
 
 def date_mkdir(mod_date=None, item=None):
@@ -47,26 +46,6 @@ def move_process(from_dir=None):
             os.rename(filepath, new_filepath)
             results.append(item)
     return results
-
-
-def to_dropbox(token=None, filepath=None, content_hash=None):
-    url = "https://content.dropboxapi.com/2/files/upload"
-    params = {"path": filepath,
-              "mute": False,
-              "mode": "add",
-              "autorename": True,
-              "strict_conflict": False
-              }
-    json_params = json.dumps(params)
-
-    headers = {"Authorization": f'Bearer {token}',
-               "Dropbox-API-Arg": f'{json_params}',
-               "Content-Type": "application/octet-stream"
-               }
-
-    req = requests.request('POST', url, json=json_params, headers=headers)
-    response = req.status_code
-    return response
 
 
 def main():
