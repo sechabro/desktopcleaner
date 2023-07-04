@@ -2,6 +2,7 @@ import requests
 import json
 import config
 from dropbox import DropboxOAuth2FlowNoRedirect
+import dbox_selenium
 import webbrowser
 
 
@@ -10,11 +11,11 @@ def oauth_flow():
     auth_flow = DropboxOAuth2FlowNoRedirect(
         creds["key"], creds["secret"])
     auth_url = auth_flow.start()
+    auth_code = dbox_selenium.get_access_token(auth_url=auth_url)
 
-    # temporary flow until selenium or similar automation incorporated
-    brave_path = 'open -a /Applications/Safari.app %s'
-    webbrowser.get(brave_path).open(auth_url)
-    auth_code = input("Enter authorization code: ").strip()
+    # brave_path = 'open -a /Applications/Safari.app %s'
+    # webbrowser.get(brave_path).open(auth_url)
+    # auth_code = input("Enter authorization code: ").strip()
 
     try:
         oauth_result = auth_flow.finish(auth_code)
