@@ -11,15 +11,12 @@ def oauth_flow():
     auth_flow = DropboxOAuth2FlowNoRedirect(
         creds["key"], creds["secret"])
     auth_url = auth_flow.start()
-    auth_code = dbox_selenium.get_access_token(auth_url=auth_url)
-
-    # brave_path = 'open -a /Applications/Safari.app %s'
-    # webbrowser.get(brave_path).open(auth_url)
-    # auth_code = input("Enter authorization code: ").strip()
+    auth_code = dbox_selenium.get_auth_code(auth_url=auth_url)
 
     try:
         oauth_result = auth_flow.finish(auth_code)
         access_token = oauth_result.access_token
+        print(access_token)
         return access_token
     except Exception as e:
         print(f"Error: {e}")
