@@ -1,16 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
+import time
 
 
 def get_auth_code(auth_url=None):
-    driver = webdriver.Safari()
+    driver = webdriver.Chrome()
     driver.get(auth_url)
-    print(auth_url)
+    # print(auth_url)
     driver.implicitly_wait(8)
-    print(driver.current_url)
+    # print(driver.current_url)
     dbox_login(driver=driver)
-    return auth_code(driver=driver)
+    code = auth_code(driver=driver)
+    return code
 
 
 def dbox_login(driver=None):
@@ -24,16 +26,13 @@ def dbox_login(driver=None):
     ActionChains(driver).send_keys_to_element(
         email_input, return_key).perform()
     driver.implicitly_wait(3)
-
-    # password not inputting. need to fix
     password_input = driver.find_element(
         by=By.NAME, value="login_password")
     ActionChains(driver).send_keys_to_element(
         password_input, "********").perform()
-    # driver.implicitly_wait(3)
-    # ActionChains(driver).send_keys_to_element(
-    #    password_input, return_key).perform()
-    driver.implicitly_wait(3)
+    print('found it')
+    ActionChains(driver).send_keys_to_element(
+        password_input, return_key).perform()
     return
 
 
