@@ -14,18 +14,25 @@ def get_auth_code(auth_url=None):
 
 
 def dbox_login(driver=None):
+    driver.get("https://www.dropbox.com/login")
     email_input = driver.find_element(
-        by=By.NAME, value="login_email")
+        by=By.NAME, value="progressive_susi_email")
+    driver.implicitly_wait(3)
+    ActionChains(driver).send_keys_to_element(
+        email_input, "********").perform()
+    return_key = Keys.RETURN
+    ActionChains(driver).send_keys_to_element(
+        email_input, return_key).perform()
+    driver.implicitly_wait(3)
+
+    # password not inputting. need to fix
     password_input = driver.find_element(
         by=By.NAME, value="login_password")
-    driver.implicitly_wait(3)
-    login_button = driver.find_element(
-        by=By.CLASS_NAME, value="login-button signin-button button-primary")
     ActionChains(driver).send_keys_to_element(
-        email_input, "").perform()
-    ActionChains(driver).send_keys_to_element(
-        password_input, "").perform()
-    ActionChains(driver).click(login_button).perform()
+        password_input, "********").perform()
+    # driver.implicitly_wait(3)
+    # ActionChains(driver).send_keys_to_element(
+    #    password_input, return_key).perform()
     driver.implicitly_wait(3)
     return
 
