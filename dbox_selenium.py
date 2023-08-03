@@ -6,7 +6,7 @@ import time
 
 def get_auth_code(auth_url=None):
     options = webdriver.ChromeOptions()
-    chrome_profile = "/Users/seanbrown/Library/Application\ Support/Google/Chrome/"
+    chrome_profile = "/Users/the_dude/Library/Application\ Support/Google/Chrome/"
     user_data = "Profile 1"
     options.add_argument(f"--user-data-dir={chrome_profile}")
     options.add_argument(f"--profile-directory={user_data}")
