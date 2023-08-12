@@ -3,7 +3,6 @@ import json
 import config
 from dropbox import DropboxOAuth2FlowNoRedirect
 import dbox_selenium
-import webbrowser
 
 
 def oauth_flow():
