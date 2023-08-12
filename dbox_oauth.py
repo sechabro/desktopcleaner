@@ -23,8 +23,7 @@ def oauth_flow():
         exit(1)
 
 
-def to_dropbox(filepath=None):
-    access_token = oauth_flow()
+def to_dropbox(filepath=None, access_token=None):
     url = "https://content.dropboxapi.com/2/files/upload"
     params = {"path": filepath,
               "mute": False,

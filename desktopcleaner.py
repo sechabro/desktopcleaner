@@ -4,6 +4,7 @@ import requests
 import json
 from datetime import datetime
 import config
+import dbox_oauth
 
 dirs = config.directories()
 
@@ -33,7 +34,8 @@ def move_process(from_dir=None):
     for item in os.listdir(from_dir):
         filepath = os.path.join(from_dir, item)
         hidden = re.findall("^[.]", item)
-        if hidden:
+        disk_image = re.findall(".dmg$", item)
+        if hidden or disk_image:
             continue
         elif not os.path.isfile(filepath):
             continue
@@ -48,7 +50,7 @@ def move_process(from_dir=None):
     return results
 
 
-def main():
+def dir_search():
     results = {}
     from_dirs = dirs["from_dirs"]
 
@@ -57,6 +59,17 @@ def main():
         results[from_dir] = moved_item
 
     print(f'files moved from: {results}')
+
+
+def main():
+
+    try:
+        access_token = dbox_oauth.oauth_flow()
+        filepath = None
+        dir_search()
+        dbox_oauth.to_dropbox(filepath=filepath, access_token=access_token)
+    except Exception:
+        quit()
 
 
 if __name__ == "__main__":
