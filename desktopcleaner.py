@@ -7,24 +7,13 @@ import dbox_oauth
 dirs = config.directories()
 
 
-# def file_move(directory=None, item=None):
-# to_dir = dirs["to_dir"]
-# new_dir = os.path.join(to_dir, mod_date)
-# new_filepath = os.path.join(directory, item)
-
-# if os.path.exists(directory):
-#    filepath_retval = new_filepath
-#    return (directory, filepath_retval)
-# else:
-#    os.mkdir(directory)
-# filepath_retval = new_filepath
-# return filepath_retval
-
-
-def move_process(from_dir=None, upload_date=None):
-    results = []
+def mkdir(upload_date=None):
     to_dir = dirs["to_dir"]
     new_dir = os.path.join(to_dir, upload_date)
+
+
+def move_process(from_dir=None, new_subdir=None):
+    results = []
     for item in os.listdir(from_dir):
         filepath = os.path.join(from_dir, item)
         hidden = re.findall("^[.]", item)
@@ -34,32 +23,32 @@ def move_process(from_dir=None, upload_date=None):
         elif not os.path.isfile(filepath):
             continue
         else:
-            new_filepath = os.path.join(new_dir, item)
+            new_filepath = os.path.join(new_subdir, item)
             os.rename(filepath, new_filepath)
             results.append(item)
-    retval = (new_dir, results)
-    return retval
+    return results
 
 
-def dir_search():
+def dir_clean(directory=None):
     results = {}
     from_dirs = dirs["from_dirs"]
-    run_date = date.today()
-    run_date_string = run_date.strftime("%Y_%\d_%m")
     for from_dir in from_dirs:
-        directory, moved_item = move_process(
-            from_dir=from_dir, upload_date=run_date_string)
+        moved_item = move_process(
+            from_dir=from_dir, new_subdir=directory)
         results[from_dir] = moved_item
 
     print(f'files moved from: {results}')
-    return directory
+    return
 
 
 def main():
+    run_date = date.today()
+    run_date_string = run_date.strftime("%Y_%\d_%m")
+    directory = mkdir(upload_date=run_date_string)
     try:
         access_token = dbox_oauth.oauth_flow()
-        filepath = dir_search()
-        dbox_oauth.to_dropbox(filepath=filepath, access_token=access_token)
+        dir_clean(directory=directory)
+        dbox_oauth.to_dropbox(filepath=directory, access_token=access_token)
     except Exception:
         quit()
 
