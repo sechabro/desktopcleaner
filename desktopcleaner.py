@@ -3,7 +3,6 @@ import re
 from datetime import date
 import config
 import dbox_oauth
-import time
 
 dirs = config.directories()
 
