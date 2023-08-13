@@ -18,7 +18,6 @@ def mkdir(upload_date=None):
 def move_process(from_dir=None, new_subdir=None, access_token=None):
     results = []
     for item in os.listdir(from_dir):
-        print(item)
         filepath = os.path.join(from_dir, item)
         hidden = re.findall("^[.]", item)
         disk_image = re.findall(".dmg$", item)
