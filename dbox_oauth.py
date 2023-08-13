@@ -11,7 +11,6 @@ def oauth_flow():
         creds["key"], creds["secret"])
     auth_url = auth_flow.start()
     auth_code = dbox_selenium.get_auth_code(auth_url=auth_url)
-
     try:
         oauth_result = auth_flow.finish(auth_code)
         access_token = oauth_result.access_token
@@ -40,6 +39,3 @@ def to_dropbox(filepath=None, access_token=None):
     req = requests.request('POST', url, json=json_params, headers=headers)
     response = req.status_code
     return response
-
-
-oauth_flow()

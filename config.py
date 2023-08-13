@@ -15,3 +15,10 @@ def get_app_creds():
     creds["key"] = str(os.getenv('DKEY', default=None))
     creds["secret"] = str(os.getenv('DSEC', default=None))
     return creds
+
+
+def get_chrome_profile():
+    profile = {}
+    profile["path"] = str(os.getenv('CHAP', default=None))
+    profile["profile"] = str(os.getenv('CHPR', default=None))
+    return profile

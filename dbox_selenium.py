@@ -2,14 +2,17 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
 import time
+import config
+
+chrome_info = config.get_chrome_profile()
 
 
 def get_auth_code(auth_url=None):
     options = webdriver.ChromeOptions()
-    chrome_profile = "/Users/the_dude/Library/Application\ Support/Google/Chrome/"
-    user_data = "Profile 1"
-    options.add_argument(f"--user-data-dir={chrome_profile}")
-    options.add_argument(f"--profile-directory={user_data}")
+    chrome_path = chrome_info["path"]
+    user_prof = chrome_info["profile"]
+    options.add_argument(f"--user-data-dir={chrome_path}")
+    options.add_argument(f"--profile-directory={user_prof}")
     driver = webdriver.Chrome(chrome_options=options)
     driver.get(auth_url)
     time.sleep(3)
