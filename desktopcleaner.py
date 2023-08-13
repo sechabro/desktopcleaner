@@ -32,7 +32,7 @@ def move_process(from_dir=None, new_subdir=None, access_token=None):
             results.append(item)
             upload = dbox_oauth.to_dropbox(
                 filepath=new_filepath, access_token=access_token)
-            print(f'uploaded {upload} to dropbox')
+            print(f'response {upload} for {item}')
     return results
 
 

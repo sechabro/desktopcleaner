@@ -14,7 +14,6 @@ def oauth_flow():
     try:
         oauth_result = auth_flow.finish(auth_code)
         access_token = oauth_result.access_token
-        print(access_token)
         return access_token
     except Exception as e:
         print(f"Error: {e}")
